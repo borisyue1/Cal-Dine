@@ -10,6 +10,7 @@ var recognized = ["Foothill", "Cafe 3", "Crossroads", "Clark Kerr", "Golden Bear
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
+app.use(express.static(__dirname + "/public"));
 
 
 app.post('/', function(req, res) {
