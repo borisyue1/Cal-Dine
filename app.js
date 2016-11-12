@@ -1,16 +1,28 @@
 var express = require("express"),
     bodyParser = require("body-parser"),
     jsdom = require("jsdom"),
-    functions = require("./misc/functions"),
+    functions = require("./misc/info"),
     indexRoutes = require("./routes/index");
 
 var app = express();
 var day = new Date().getDay();
+var hoursURL = "http://caldining.berkeley.edu/locations/semester-hours";
+var jQueryScript = "https://code.jquery.com/jquery-3.1.1.min.js";
 var recognized = ["Foothill", "Cafe 3", "Crossroads", "Clark Kerr", "Golden Bear Cafe", "Qualcomm Cafe"];
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
+
+
+// jsdom.env({
+//             url: "http://caldining.berkeley.edu/menus/all-locations-d1",
+//             scripts: ["https://code.jquery.com/jquery-3.1.1.min.js"],
+//             done: function (errors, window) {
+//                 var $ = window.$;
+                
+//             }
+//         });
 
 
 app.post('/', function(req, res) {
@@ -20,8 +32,8 @@ app.post('/', function(req, res) {
     text = text.replace(/\s+/g, '');
     if (text == "foothill") {
         jsdom.env({
-            url: "http://caldining.berkeley.edu/locations/semester-hours",
-            scripts: ["https://code.jquery.com/jquery-3.1.1.min.js"],
+            url: hoursURL,
+            scripts: [jQueryScript],
             done: function (errors, window) {
                 var $ = window.$;
                 var foothill = "Foothill(2700 Hearst Ave)"
@@ -37,8 +49,8 @@ app.post('/', function(req, res) {
         });
     } else if(text == 'cafe3' || text == 'cafethree') {
         jsdom.env({
-            url: "http://caldining.berkeley.edu/locations/semester-hours",
-            scripts: ["https://code.jquery.com/jquery-3.1.1.min.js"],
+            url: hoursURL,
+            scripts: [jQueryScript],
             done: function (errors, window) {
                 var $ = window.$;
                 var cafe3 = "Cafe 3(2400 Durant Ave)";
@@ -53,8 +65,8 @@ app.post('/', function(req, res) {
         });
     } else if(text == 'crossroads' || text == 'croads' || text == 'xroads'){
         jsdom.env({
-            url: "http://caldining.berkeley.edu/locations/semester-hours",
-            scripts: ["https://code.jquery.com/jquery-3.1.1.min.js"],
+            url: hoursURL,
+            scripts: [jQueryScript],
             done: function (errors, window) {
                 var $ = window.$;
                 var croads = "Crossroads(2415 Bowditch St)";
@@ -74,8 +86,8 @@ app.post('/', function(req, res) {
         });
     } else if(text == "clarkkerr") {
         jsdom.env({
-            url: "http://caldining.berkeley.edu/locations/semester-hours",
-            scripts: ["https://code.jquery.com/jquery-3.1.1.min.js"],
+            url: hoursURL,
+            scripts: [jQueryScript],
             done: function (errors, window) {
                 var $ = window.$;
                 var ck = "Crossroads(2610 Warring St)";
@@ -90,8 +102,8 @@ app.post('/', function(req, res) {
         });
     } else if(text=="gbc" || text == "goldenbearcafe"){
         jsdom.env({
-            url: "http://caldining.berkeley.edu/locations/semester-hours",
-            scripts: ["https://code.jquery.com/jquery-3.1.1.min.js"],
+            url: hoursURL,
+            scripts: [jQueryScript],
             done: function (errors, window) {
                 var $ = window.$;
                 var gbc = "Golden Bear Cafe(Upper Sproul Plaza)";
@@ -107,8 +119,8 @@ app.post('/', function(req, res) {
         });
     } else if(text=="qualcommcafe"){
         jsdom.env({
-            url: "http://caldining.berkeley.edu/locations/semester-hours",
-            scripts: ["https://code.jquery.com/jquery-3.1.1.min.js"],
+            url: hoursURL,
+            scripts: [jQueryScript],
             done: function (errors, window) {
                 var $ = window.$;
                 var qc = "Qualcomm Cafe(Sutardja Dai Hall)";

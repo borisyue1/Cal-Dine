@@ -1,5 +1,5 @@
 var day = new Date().getDay();
-var functions = {
+var info = {
     foothillWeekday: function(foothill, $){
         foothill += "\n" + $(".bodytext:nth-of-type(2) tr:nth-of-type(2) td:nth-of-type(2)").text() + ": ";
         foothill += $(".bodytext:nth-of-type(2) tr:nth-of-type(3) td:nth-of-type(2)").text();//hours
@@ -90,4 +90,4 @@ var functions = {
     }
 }
 
-module.exports = functions;
+module.exports = info;
