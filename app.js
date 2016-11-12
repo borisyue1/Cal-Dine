@@ -57,7 +57,7 @@ app.post('/', function(req, res) {
                 if(day >= 1 && day <= 5){
                     croads = functions.croadsWeekday(croads, $);
                 } else {
-                    croads = functions.cafeThreeWeekend(croads, $);
+                    croads = functions.croadsWeekend(croads, $);
                 }
                 if(day >= 0 && day <= 4){
                     croads += "\n" + "Late night: 10pm - 2am";
@@ -66,6 +66,22 @@ app.post('/', function(req, res) {
                 }
                 croads += "\n" + "Menu: " + "http://caldining.berkeley.edu/menus/crossroads";
                 end(twiml, croads, res);
+            }
+        });
+    } else if(text == "clarkkerr") {
+        jsdom.env({
+            url: "http://caldining.berkeley.edu/locations/semester-hours",
+            scripts: ["https://code.jquery.com/jquery-3.1.1.min.js"],
+            done: function (errors, window) {
+                var $ = window.$;
+                var ck = "Crossroads(2610 Warring St)";
+                if(day >= 1 && day <= 5){
+                    ck = functions.ckWeekday(ck, $);
+                } else {
+                    ck = functions.ckWeekend(ck, $);
+                }
+                ck += "\n" + "Menu: " + "http://caldining.berkeley.edu/menus/clark-kerr-campus";
+                end(twiml, ck, res);
             }
         });
     }

@@ -48,15 +48,29 @@ var functions = {
         croads += $(".bodytext:nth-of-type(1) tr:nth-of-type(3) td:nth-of-type(3) p:nth-of-type(1)").text();//hours
         croads += "\n" + "(2pm - 5pm continuous service - grill, pizza, soup, salad, deli)"; //hours
         croads += "\n" + $(".bodytext:nth-of-type(1) tr:nth-of-type(2) td:nth-of-type(4)").text() + ": ";
-        //hours
         croads += $(".bodytext:nth-of-type(1) tr:nth-of-type(3) td:nth-of-type(4)").text();
         return croads;
     },
     croadsWeekend: function(croads, $){
         croads += "\n" + $(".bodytext:nth-of-type(1) tr:nth-of-type(4) td:nth-of-type(2)").text() + ": ";
-        croads += "\n" + $(".bodytext:nth-of-type(1) tr:nth-of-type(5) td:nth-of-type(2)").text();//hours
+        croads += $(".bodytext:nth-of-type(1) tr:nth-of-type(5) td:nth-of-type(2)").text();//hours
         croads += "\n" + $(".bodytext:nth-of-type(1) tr:nth-of-type(4) td:nth-of-type(3)").text() + ": ";
-        croads += "\n" + $(".bodytext:nth-of-type(1) tr:nth-of-type(5) td:nth-of-type(3)").text();//hours
+        croads += $(".bodytext:nth-of-type(1) tr:nth-of-type(5) td:nth-of-type(3)").text();//hours
+        return croads;
+    },
+    ckWeekday: function(ck, $){
+        ck += "\n" + $(".bodytext:nth-of-type(4) tr:nth-of-type(2) td:nth-of-type(2)").text() + ": ";
+        ck += $(".bodytext:nth-of-type(4) tr:nth-of-type(3) td:nth-of-type(2)").text() + ": ";//hours
+        ck += "\n" + $(".bodytext:nth-of-type(4) tr:nth-of-type(2) td:nth-of-type(4)").text() + ": ";
+        ck += $(".bodytext:nth-of-type(4) tr:nth-of-type(3) td:nth-of-type(4)").text() + ": ";//hours
+        return ck;
+    },
+    ckWeekend: function(ck, $){
+        ck += "\n" + $(".bodytext:nth-of-type(4) tr:nth-of-type(4) td:nth-of-type(2)").text() + ": ";
+        ck += $(".bodytext:nth-of-type(4) tr:nth-of-type(5) td:nth-of-type(2)").text() + ": ";//hours
+        ck += "\n" + $(".bodytext:nth-of-type(4) tr:nth-of-type(4) td:nth-of-type(4)").text() + ": ";
+        ck += $(".bodytext:nth-of-type(4) tr:nth-of-type(5) td:nth-of-type(4)").text() + ": ";//hours
+        return ck;
     }
 }
 
