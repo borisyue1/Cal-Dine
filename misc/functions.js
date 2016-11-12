@@ -71,6 +71,22 @@ var functions = {
         ck += "\n" + $(".bodytext:nth-of-type(4) tr:nth-of-type(4) td:nth-of-type(4)").text() + ": ";
         ck += $(".bodytext:nth-of-type(4) tr:nth-of-type(5) td:nth-of-type(4)").text() + ": ";//hours
         return ck;
+    },
+    gbcWeekday: function(gbc, $){
+        gbc += "\n" + "Hours: " + $(".bodytext:nth-of-type(5) tr:nth-of-type(1) td:nth-of-type(3)").text();
+        return gbc;
+    },
+    gbcFriday: function(gbc, $){
+        gbc += "\n" + "Hours: " + $(".bodytext:nth-of-type(5) tr:nth-of-type(2) td:nth-of-type(2)").text();
+        return gbc;
+    },
+    qcWeekday: function(qc, $){
+        qc += "\n" + "Hours: " + $(".bodytext:nth-of-type(7) tr:nth-of-type(1) td:nth-of-type(3)").text();
+        return qc;
+    },
+    qcFriday: function(qc, $){
+        qc += "\n" + "Hours: " + $(".bodytext:nth-of-type(7) tr:nth-of-type(2) td:nth-of-type(2)").text();
+        return qc;
     }
 }
 

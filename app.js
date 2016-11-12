@@ -5,7 +5,7 @@ var express = require("express"),
 
 var app = express();
 var day = new Date().getDay();
-var recognized = ["Foothill", "Cafe 3", "Crossroads"];
+var recognized = ["Foothill", "Cafe 3", "Crossroads", "Clark Kerr", "Golden Bear Cafe", "Qualcomm Cafe"];
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
@@ -84,6 +84,46 @@ app.post('/', function(req, res) {
                 end(twiml, ck, res);
             }
         });
+    } else if(text=="gbc" || text == "goldenbearcafe"){
+        jsdom.env({
+            url: "http://caldining.berkeley.edu/locations/semester-hours",
+            scripts: ["https://code.jquery.com/jquery-3.1.1.min.js"],
+            done: function (errors, window) {
+                var $ = window.$;
+                var gbc = "Golden Bear Cafe(Upper Sproul Plaza)";
+                if(day >= 1 && day <= 4){
+                    gbc = functions.gbcWeekday(gbc, $);
+                } else if (day == 5) {
+                    gbc = functions.gbcFriday(gbc, $);
+                } else {
+                    gbc = "Closed on weekends";
+                }
+                end(twiml, gbc, res);
+            }
+        });
+    } else if(text=="qualcommcafe"){
+        jsdom.env({
+            url: "http://caldining.berkeley.edu/locations/semester-hours",
+            scripts: ["https://code.jquery.com/jquery-3.1.1.min.js"],
+            done: function (errors, window) {
+                var $ = window.$;
+                var qc = "Qualcomm Cafe(Sutardja Dai Hall)";
+                if(day >= 1 && day <= 4){
+                    qc = functions.gbcWeekday(qc, $);
+                } else if (day == 5) {
+                    qc = functions.gbcFriday(qc, $);
+                } else {
+                    qc = "Closed on weekends";
+                }
+                end(twiml, qc, res);
+            }
+        });
+    } else {
+        var error = "Sorry, I don't recognize that location. Here are the ones I do know: "
+        recognized.forEach(function(place){
+            error = error + "\n" + place;
+        });
+        end(twiml, error, res);
     }
 });
 
