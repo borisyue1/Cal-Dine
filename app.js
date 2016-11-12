@@ -1,7 +1,7 @@
 var express = require("express"),
     bodyParser = require("body-parser"),
     jsdom = require("jsdom"),
-    functions = require("./functions");
+    functions = require("./misc/functions");
 
 var app = express();
 var day = new Date().getDay();
@@ -12,16 +12,15 @@ app.post('/', function(req, res) {
     var twilio = require('twilio');
     var twiml = new twilio.TwimlResponse();
     var text = req.body.Body.toLowerCase();
+    text = text.replace(/\s+/g, '');
     if (text == "foothill") {
         jsdom.env({
             url: "http://caldining.berkeley.edu/locations/semester-hours",
             scripts: ["https://code.jquery.com/jquery-3.1.1.min.js"],
             done: function (errors, window) {
                 var $ = window.$;
-                // var foothill =  $(".title1 + table + hr + .title2").text();
                 var foothill = "Foothill(2700 Hearst Ave)"
                 //adding hours
-                day = 4;
                 if(day >= 1 && day <= 5){
                     foothill = functions.foothillWeekday(foothill, $);
                 } else {
@@ -31,13 +30,39 @@ app.post('/', function(req, res) {
                 end(twiml, foothill, res);
             }
         });
-    } else if(req.body.Body == 'bye') {
-        twiml.message('Goodbye');
-    } else {
-        twiml.message('No Body param match, Twilio sends this in the request to your server.');
+    } else if(text == 'cafe3' || text == 'cafethree') {
+        jsdom.env({
+            url: "http://caldining.berkeley.edu/locations/semester-hours",
+            scripts: ["https://code.jquery.com/jquery-3.1.1.min.js"],
+            done: function (errors, window) {
+                var $ = window.$;
+                var cafe3 = "Cafe 3(2400 Durant Ave)";
+                if(day >= 1 && day <= 5){
+                    cafe3 = functions.cafeThreeWeekday(cafe3, $);
+                } else {
+                    cafe3 = functions.cafeThreeWeekend(cafe3, $);
+                }
+                cafe3 += "\n" + "Menu: " + "http://caldining.berkeley.edu/menus/cafe3";
+                end(twiml, cafe3, res);
+            }
+        });
+    } else if(text == 'crossroads' || text == 'croads' || text == 'xcroads'){
+        jsdom.env({
+            url: "http://caldining.berkeley.edu/locations/semester-hours",
+            scripts: ["https://code.jquery.com/jquery-3.1.1.min.js"],
+            done: function (errors, window) {
+                var $ = window.$;
+                var croads = "Cafe 3(2400 Durant Ave)";
+                if(day >= 1 && day <= 5){
+                    croads = functions.cafeThreeWeekday(croads, $);
+                } else {
+                    croads = functions.cafeThreeWeekend(croads, $);
+                }
+                croads += "\n" + "Menu: " + "http://caldining.berkeley.edu/menus/cafe3";
+                end(twiml, croads, res);
+            }
+        });
     }
-    // res.writeHead(200, {'Content-Type': 'text/xml'});
-    // res.end(twiml.toString());
 });
 
 

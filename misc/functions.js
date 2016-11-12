@@ -26,7 +26,20 @@ var functions = {
             foothill += "\n" + "Late night: 10pm - 2am";
         }
         return foothill;
-
+    },
+    cafeThreeWeekday: function(cafe3, $){
+        cafe3 += "\n" + $(".bodytext:nth-of-type(3) tr:nth-of-type(2) td:nth-of-type(2)").text() + ": ";
+        cafe3 += $(".bodytext:nth-of-type(3) tr:nth-of-type(3) td:nth-of-type(2)").text();
+        cafe3 += "\n" + $(".bodytext:nth-of-type(3) tr:nth-of-type(2) td:nth-of-type(3)").text() + ": ";
+        cafe3 += $(".bodytext:nth-of-type(3) tr:nth-of-type(3) td:nth-of-type(3)").text();
+        return cafe3;
+    },
+    cafeThreeWeekend: function(cafe3, $){
+        cafe3 += "\n" + $(".bodytext:nth-of-type(3) tr:nth-of-type(4) td:nth-of-type(2)").text() + ": ";
+        cafe3 += $(".bodytext:nth-of-type(3) tr:nth-of-type(5) td:nth-of-type(2)").text();
+        cafe3 += "\n" + $(".bodytext:nth-of-type(3) tr:nth-of-type(4) td:nth-of-type(3)").text() + ": ";
+        cafe3 += $(".bodytext:nth-of-type(3) tr:nth-of-type(5) td:nth-of-type(3)").text();
+        return cafe3;
     }
 }
 
