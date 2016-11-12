@@ -5,6 +5,7 @@ var express = require("express"),
 
 var app = express();
 var day = new Date().getDay();
+var recognized = ["Foothill", "Cafe 3", "Crossroads"];
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
@@ -46,19 +47,24 @@ app.post('/', function(req, res) {
                 end(twiml, cafe3, res);
             }
         });
-    } else if(text == 'crossroads' || text == 'croads' || text == 'xcroads'){
+    } else if(text == 'crossroads' || text == 'croads' || text == 'xroads'){
         jsdom.env({
             url: "http://caldining.berkeley.edu/locations/semester-hours",
             scripts: ["https://code.jquery.com/jquery-3.1.1.min.js"],
             done: function (errors, window) {
                 var $ = window.$;
-                var croads = "Cafe 3(2400 Durant Ave)";
+                var croads = "Crossroads(2415 Bowditch St)";
                 if(day >= 1 && day <= 5){
-                    croads = functions.cafeThreeWeekday(croads, $);
+                    croads = functions.croadsWeekday(croads, $);
                 } else {
                     croads = functions.cafeThreeWeekend(croads, $);
                 }
-                croads += "\n" + "Menu: " + "http://caldining.berkeley.edu/menus/cafe3";
+                if(day >= 0 && day <= 4){
+                    croads += "\n" + "Late night: 10pm - 2am";
+                } else {
+                    croads += "\n" + "Late night: no late night service";
+                }
+                croads += "\n" + "Menu: " + "http://caldining.berkeley.edu/menus/crossroads";
                 end(twiml, croads, res);
             }
         });
