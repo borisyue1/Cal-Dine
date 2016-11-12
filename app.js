@@ -1,16 +1,28 @@
 var express = require("express"),
-    bodyParser = require("body-parser");
-    // twilio = require("twilio");
-    
+    bodyParser = require("body-parser"),
+    jsdom = require("jsdom");
+
 var app = express();
+var currentDay = new Date().getDay();
 app.use(bodyParser.urlencoded({ extended: true })); 
 
+var foothill = "hi";
+
+jsdom.env({
+    url: "http://caldining.berkeley.edu/locations/semester-hours",
+    scripts: ["https://code.jquery.com/jquery-3.1.1.min.js"],
+    done: function (errors, window) {
+        var $ = window.$;
+        foothill = $(".title1 + table + hr + .title2").text();
+    }
+});
 
 app.post('/', function(req, res) {
     var twilio = require('twilio');
     var twiml = new twilio.TwimlResponse();
-    if (req.body.Body == 'hello') {
-        twiml.message('Hi!');
+    var text = req.body.Body.toLowerCase();
+    if (text == "foothill") {
+        twiml.message(foothill);
     } else if(req.body.Body == 'bye') {
         twiml.message('Goodbye');
     } else {
