@@ -8,9 +8,9 @@ var functions = {
         foothill += "\n" + $(".bodytext:nth-of-type(2) tr:nth-of-type(2) td:nth-of-type(4)").text() + ": ";
         foothill += $(".bodytext:nth-of-type(2) tr:nth-of-type(3) td:nth-of-type(4)").text();
         if(day < 4){
-            foothill += "\n" + "Late night service: 9pm - 1am";
+            foothill += "\n" + "Late night: 9pm - 1am";
         } else {
-            foothill += "\n" + "No late night service";
+            foothill += "\n" + "Late night: no late night service";
         }
         return foothill;
     },
@@ -20,10 +20,10 @@ var functions = {
         foothill += "\n" + $(".bodytext:nth-of-type(2) tr:nth-of-type(4) td:nth-of-type(3)").text() + ": ";
         foothill += $(".bodytext:nth-of-type(2) tr:nth-of-type(5) td:nth-of-type(3)").text();
         if(day > 5){
-            foothill += "\n" + "No late night service";
+            foothill += "\n" + "Late night: no late night service";
         }
         else {
-            foothill += "\n" + "Late night service: 10pm - 2am";
+            foothill += "\n" + "Late night: 10pm - 2am";
         }
         return foothill;
 

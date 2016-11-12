@@ -21,12 +21,14 @@ app.post('/', function(req, res) {
                 // var foothill =  $(".title1 + table + hr + .title2").text();
                 var foothill = "Foothill(2700 Hearst Ave)"
                 //adding hours
+                day = 4;
                 if(day >= 1 && day <= 5){
-                    end(twiml, functions.foothillWeekday(foothill, $), res);
+                    foothill = functions.foothillWeekday(foothill, $);
                 } else {
-                    end(twiml, functions.foothillWeekend(foothill, $), res);
+                    foothill = functions.foothillWeekend(foothill, $)
                 }
-                // end(twiml, foothill, res);
+                foothill += "\n" + "Menu: " + "http://caldining.berkeley.edu/menus/foothill";
+                end(twiml, foothill, res);
             }
         });
     } else if(req.body.Body == 'bye') {
