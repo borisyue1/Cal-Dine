@@ -1,6 +1,7 @@
 var express = require("express"),
     bodyParser = require("body-parser"),
-    jsdom = require("jsdom");
+    jsdom = require("jsdom"),
+    functions = require("./functions");
 
 var app = express();
 var day = new Date().getDay();
@@ -17,15 +18,15 @@ app.post('/', function(req, res) {
             scripts: ["https://code.jquery.com/jquery-3.1.1.min.js"],
             done: function (errors, window) {
                 var $ = window.$;
-                var foothill =  $(".title1 + table + hr + .title2").text();
+                // var foothill =  $(".title1 + table + hr + .title2").text();
+                var foothill = "Foothill(2700 Hearst Ave)"
+                //adding hours
                 if(day >= 1 && day <= 5){
-                    console.log(day);
+                    end(twiml, functions.foothillWeekday(foothill, $), res);
                 } else {
-                    
+                    end(twiml, functions.foothillWeekend(foothill, $), res);
                 }
-                twiml.message(foothill);
-                res.writeHead(200, {'Content-Type': 'text/xml'});
-                res.end(twiml.toString());
+                // end(twiml, foothill, res);
             }
         });
     } else if(req.body.Body == 'bye') {
@@ -36,6 +37,14 @@ app.post('/', function(req, res) {
     // res.writeHead(200, {'Content-Type': 'text/xml'});
     // res.end(twiml.toString());
 });
+
+
+//end request
+function end(twiml, message, res){
+    twiml.message(message);
+    res.writeHead(200, {'Content-Type': 'text/xml'});
+    res.end(twiml.toString());
+}
 
 
 app.listen(process.env.PORT, process.env.IP, function(){
