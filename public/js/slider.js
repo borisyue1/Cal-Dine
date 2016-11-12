@@ -5,5 +5,9 @@ $.backstretch([
     , "https://farm4.staticflickr.com/3758/9017389020_e37f7a81f7_b.jpg"
   ], {duration: 3000, fade: 1200});
 
-// $.backstretch("http://videos2.healthination.com/HN_BB_05_EasyCooking_ProRes_739/HN_BB_05_EasyCooking_ProRes_739-img_1280x720.jpg");
-// $.backstretch("https://www.pritikin.com/wp/wp-content/uploads/2015/03/healthy-cooking-secrets-20.jpg");
+$(function(){
+      $("#number").typed({
+        strings: [$("#number").text()],
+        typeSpeed: 0
+      });
+  });
