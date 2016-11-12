@@ -73,21 +73,34 @@ var info = {
         return ck;
     },
     gbcWeekday: function(gbc, $){
-        gbc += "\n" + "Hours: " + $(".bodytext:nth-of-type(5) tr:nth-of-type(1) td:nth-of-type(3)").text();
+        gbc += "\n" + "Hours: " + $(".bodytext:nth-of-type(5) tr:nth-of-type(1) td:nth-of-type(3)").text();//hours
         return gbc;
     },
     gbcFriday: function(gbc, $){
-        gbc += "\n" + "Hours: " + $(".bodytext:nth-of-type(5) tr:nth-of-type(2) td:nth-of-type(2)").text();
+        gbc += "\n" + "Hours: " + $(".bodytext:nth-of-type(5) tr:nth-of-type(2) td:nth-of-type(2)").text();//hours
         return gbc;
     },
     qcWeekday: function(qc, $){
-        qc += "\n" + "Hours: " + $(".bodytext:nth-of-type(7) tr:nth-of-type(1) td:nth-of-type(3)").text();
+        qc += "\n" + "Hours: " + $(".bodytext:nth-of-type(7) tr:nth-of-type(1) td:nth-of-type(3)").text();//hours
         return qc;
     },
     qcFriday: function(qc, $){
-        qc += "\n" + "Hours: " + $(".bodytext:nth-of-type(7) tr:nth-of-type(2) td:nth-of-type(2)").text();
+        qc += "\n" + "Hours: " + $(".bodytext:nth-of-type(7) tr:nth-of-type(2) td:nth-of-type(2)").text();//hours
         return qc;
+    },
+    brownWeekday: function(brown, $){
+        brown += "\n" + "Hours: " + $(".bodytext:nth-of-type(6) tr:nth-of-type(2) td:nth-of-type(2)").text();//hours
+        return brown;
+    },
+    brownFriday: function(brown, $){
+        brown += "\n" + "Hours: " + $(".bodytext:nth-of-type(6) tr:nth-of-type(3) td:nth-of-type(2)").text();
+        return brown;
+    },
+    tcWeekday: function(tc, $){
+        tc += "\n" + "Hours: " + $(".bodytext:nth-of-type(8) tr:nth-of-type(1) td:nth-of-type(3)").text();
+        return tc;
     }
+    
 }
 
 module.exports = info;

@@ -8,7 +8,13 @@ var app = express();
 var day = new Date().getDay();
 var hoursURL = "http://caldining.berkeley.edu/locations/semester-hours";
 var jQueryScript = "https://code.jquery.com/jquery-3.1.1.min.js";
-var recognized = ["Foothill", "Cafe 3", "Crossroads", "Clark Kerr", "Golden Bear Cafe", "Qualcomm Cafe"];
+var recognized = ["Foothill", "Cafe 3", "Crossroads", "Clark Kerr", "Golden Bear Cafe", "Qualcomm Cafe", "Brown's Cafe", "Terrace Cafe"];
+var result = {
+    "Cafe 3": {"Brunch": [], "Dinner": []}, 
+    "Clark Kerr Campus": {"Breakfast":[], "Lunch":[],"Brunch": [], "Dinner": []}, 
+    "Crossroads": {"Breakfast":[], "Lunch":[], "Brunch": [], "Dinner": []}, 
+    "Foothill": {"Breakfast":[], "Lunch":[],"Brunch": [], "Dinner": []}
+};
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
@@ -17,10 +23,27 @@ app.use(express.static(__dirname + "/public"));
 
 // jsdom.env({
 //             url: "http://caldining.berkeley.edu/menus/all-locations-d1",
-//             scripts: ["https://code.jquery.com/jquery-3.1.1.min.js"],
+//             scripts: [jQueryScript],
 //             done: function (errors, window) {
 //                 var $ = window.$;
-                
+//                 var menus = $(".meal_items").text();
+//                 menus = menus.split('\n');
+//                 console.log(menus)
+//                 menus.splice(0, 1); //theres empty string in beginning
+//                 var place = "";
+//                 var time = "";
+//                 for(var i = 0; i < menus.length; i++){
+//                     var current = menus[i]
+//                     // current = current.replace(/\s+/g, ''); //remove spaces
+//                     // if(current in result){
+//                     //     place = current;
+//                     // } else if(current in result[place]){
+//                     //     time = current;
+//                     // } else {
+//                     //     result[place][time].append(current);
+//                     // }
+//                 }
+
 //             }
 //         });
 
@@ -132,6 +155,38 @@ app.post('/', function(req, res) {
                     qc = "Closed on weekends";
                 }
                 end(twiml, qc, res);
+            }
+        });
+    } else if(text == "brown'scafe" || text == "brownscafe"){
+        jsdom.env({
+            url: hoursURL,
+            scripts: [jQueryScript],
+            done: function (errors, window) {
+                var $ = window.$;
+                var brown = "Brown's Cafe(Genetics & Plant Biology Rooftop)";
+                if(day >= 1 && day <= 4){
+                    brown = functions.brownWeekday(brown, $);
+                } else if (day == 5) {
+                    brown = functions.brownFriday(brown, $);
+                } else {
+                    brown = "Closed on weekends";
+                }
+                end(twiml, brown, res);
+            }
+        });
+    } else if(text == "terracecafe"){
+        jsdom.env({
+            url: hoursURL,
+            scripts: [jQueryScript],
+            done: function (errors, window) {
+                var $ = window.$;
+                var tc = "Brown's Cafe(Genetics & Plant Biology Rooftop)";
+                if(day >= 1 && day <= 5){
+                    tc = functions.tcWeekday(tc, $);
+                } else {
+                    tc = "Closed on weekends";
+                }
+                end(twiml, tc, res);
             }
         });
     } else {
