@@ -21,31 +21,43 @@ app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 
 
-// jsdom.env({
-//             url: "http://caldining.berkeley.edu/menus/all-locations-d1",
-//             scripts: [jQueryScript],
-//             done: function (errors, window) {
-//                 var $ = window.$;
-//                 var menus = $(".meal_items").text();
-//                 menus = menus.split('\n');
-//                 console.log(menus)
-//                 menus.splice(0, 1); //theres empty string in beginning
-//                 var place = "";
-//                 var time = "";
-//                 for(var i = 0; i < menus.length; i++){
-//                     var current = menus[i]
-//                     // current = current.replace(/\s+/g, ''); //remove spaces
-//                     // if(current in result){
-//                     //     place = current;
-//                     // } else if(current in result[place]){
-//                     //     time = current;
-//                     // } else {
-//                     //     result[place][time].append(current);
-//                     // }
-//                 }
-
-//             }
-//         });
+jsdom.env({
+            url: "http://caldining.berkeley.edu/menus/all-locations-d1",
+            scripts: [jQueryScript],
+            done: function (errors, window) {
+                var $ = window.$;
+                var menus = $(".meal_items").text();
+                menus = menus.split('\n');
+                removeSpaces(menus);
+                var place = "";
+                var time = "";
+                for(var i = 0; i < menus.length; i++){
+                    var current = menus[i]
+                    if(current in result){
+                        place = current;
+                    } else if(current in result[place]){
+                        time = current;
+                    } else if(current != "Brunch" && current.includes("Brunch")){
+                        place = current.slice(0, -6);
+                        time = "Brunch";
+                    } else {
+                        result[place][time].push(current);
+                    }
+                }
+            }
+        });
+        
+    
+        
+function removeSpaces(menus){
+    for(var i = menus.length - 1; i >= 0; i--){
+        menus[i] = menus[i].trim();
+        if (menus[i] == '' ||  menus[i] == 'N/A'){
+            var index = menus.indexOf(menus[i]);
+            menus.splice(index, 1);
+        }
+    }
+}
 
 
 app.post('/', function(req, res) {
