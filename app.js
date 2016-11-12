@@ -1,12 +1,15 @@
 var express = require("express"),
     bodyParser = require("body-parser"),
     jsdom = require("jsdom"),
-    functions = require("./misc/functions");
+    functions = require("./misc/functions"),
+    indexRoutes = require("./routes/index");
 
 var app = express();
 var day = new Date().getDay();
 var recognized = ["Foothill", "Cafe 3", "Crossroads", "Clark Kerr", "Golden Bear Cafe", "Qualcomm Cafe"];
+
 app.use(bodyParser.urlencoded({ extended: true }));
+app.set("view engine", "ejs");
 
 
 app.post('/', function(req, res) {
@@ -135,6 +138,7 @@ function end(twiml, message, res){
     res.end(twiml.toString());
 }
 
+app.use(indexRoutes);
 
 app.listen(process.env.PORT, process.env.IP, function(){
     console.log("server started");
