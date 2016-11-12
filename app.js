@@ -3,34 +3,40 @@ var express = require("express"),
     jsdom = require("jsdom");
 
 var app = express();
-var currentDay = new Date().getDay();
-app.use(bodyParser.urlencoded({ extended: true })); 
+var day = new Date().getDay();
+app.use(bodyParser.urlencoded({ extended: true }));
 
-var foothill = "hi";
-
-jsdom.env({
-    url: "http://caldining.berkeley.edu/locations/semester-hours",
-    scripts: ["https://code.jquery.com/jquery-3.1.1.min.js"],
-    done: function (errors, window) {
-        var $ = window.$;
-        foothill = $(".title1 + table + hr + .title2").text();
-    }
-});
 
 app.post('/', function(req, res) {
     var twilio = require('twilio');
     var twiml = new twilio.TwimlResponse();
     var text = req.body.Body.toLowerCase();
     if (text == "foothill") {
-        twiml.message(foothill);
+        jsdom.env({
+            url: "http://caldining.berkeley.edu/locations/semester-hours",
+            scripts: ["https://code.jquery.com/jquery-3.1.1.min.js"],
+            done: function (errors, window) {
+                var $ = window.$;
+                var foothill =  $(".title1 + table + hr + .title2").text();
+                if(day >= 1 && day <= 5){
+                    console.log(day);
+                } else {
+                    
+                }
+                twiml.message(foothill);
+                res.writeHead(200, {'Content-Type': 'text/xml'});
+                res.end(twiml.toString());
+            }
+        });
     } else if(req.body.Body == 'bye') {
         twiml.message('Goodbye');
     } else {
         twiml.message('No Body param match, Twilio sends this in the request to your server.');
     }
-    res.writeHead(200, {'Content-Type': 'text/xml'});
-    res.end(twiml.toString());
+    // res.writeHead(200, {'Content-Type': 'text/xml'});
+    // res.end(twiml.toString());
 });
+
 
 app.listen(process.env.PORT, process.env.IP, function(){
     console.log("server started");
