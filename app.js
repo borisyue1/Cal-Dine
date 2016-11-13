@@ -42,11 +42,11 @@ app.post('/', function(req, res) {
                 var $ = window.$;
                 if(text == "crossroads" || text == "croads" || text == "xroads"){
                     crossroads(twiml, res, $);
-                } else if(text == "brown'scafe" || text == "brownscafe"){
+                } else if(text == "brown'scafe" || text == "brownscafe" || text == "browns" || text == "brown's"){
                     browns(twiml, res, $);
-                } else if(text == "terracecafe"){
+                } else if(text == "terracecafe" || text == "terrace"){
                     terrace(twiml, res, $);
-                } else if(text == "qualcommcafe"){
+                } else if(text == "qualcommcafe" || text == "qualcomm"){
                     qualcomm(twiml, res, $);
                 } else if(text == "gbc" || text == "goldenbearcafe"){
                     gbc(twiml, res, $);
@@ -104,8 +104,8 @@ app.post('/', function(req, res) {
             }
         });
     } else if(text == "helpme"){
-        var help = "TEXT OPTIONS: " + '\n' + "text \"<insert_restaurant_name>\" for today's menu" +
-                    ';\n' + "text \"<insert_restaurant_name> info\" for hours and location";
+        var help = "TEXT OPTIONS: " + '\n' + "text \"restaurant_name\" for today's menu" +
+                    ';\n' + "text \"restaurant_name info\" for hours and location";
         end(twiml, help, res);
     } else {
         var error = "Sorry, I don't recognize that location. Here are the commands I do know(not case-sensitive): "
@@ -214,7 +214,7 @@ function printMenu(cafe, menu){
     var str = cafe + ':';
     for(var key in menu){
         if(menu[key].length != 0){
-            str = str + '\n' + '\n' + key + '-';
+            str = str + '\n' + '\n' + key + ':';
             for(var s = 0; s < menu[key].length; s++){
                 str = str + '\n' + menu[key][s];
             }
