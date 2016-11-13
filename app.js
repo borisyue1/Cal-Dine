@@ -22,34 +22,6 @@ var result = {
     "Foothill": {"Breakfast":[], "Lunch":[],"Brunch": [], "Dinner": []}
 };
 
-// jsdom.env({
-//     url: "http://caldining.berkeley.edu/menus/all-locations-d1",
-//     scripts: [jQueryScript],
-//     done: function (errors, window) {
-//         var $ = window.$;
-//         var menus = $(".meal_items").text();
-//         menus = menus.split('\n');
-//         removeSpaces(menus);
-//         var place = "";
-//         var time = "";
-//         for(var i = 0; i < menus.length; i++){
-//             var current = menus[i]
-//             if(current in result){
-//                 place = current;
-//             } else if(current in result[place]){
-//                 time = current;
-//             } else if(current != "Brunch" && current.includes("Brunch")){
-//                 place = current.slice(0, -6);
-//                 time = "Brunch";
-//             } else {
-//                 result[place][time].push(current);
-//             }
-//         }        
-//         // console.log(result)
-//         // module.exports = result;
-
-//     }
-// });
 
 function removeSpaces(menus){
     for(var i = menus.length - 1; i >= 0; i--){
@@ -203,7 +175,7 @@ app.post('/', function(req, res) {
                 end(twiml, tc, res);
             }
         });
-    } else if(text == "croadsinfo"){
+    } else if(text == "croadsinfo" || text == "crossroadsinfo" || text == "xroadsinfo"){
         jsdom.env({
             url: "http://caldining.berkeley.edu/menus/all-locations-d1",
             scripts: [jQueryScript],
@@ -227,13 +199,13 @@ app.post('/', function(req, res) {
                         result[place][time].push(current);
                     }
                 }   
-                end(twiml, result["Crossroads"], res);
+                end(twiml, printMenu("Crossroads", result["Crossroads"]), res);
         
             }
         });
         
     } else {
-        var error = "Sorry, I don't recognize that location. Here are the ones I do know: "
+        var error = "Sorry, I don't recognize that location. Here are the commands I do know: "
         recognized.forEach(function(place){
             error = error + "\n" + place;
         });
@@ -241,8 +213,17 @@ app.post('/', function(req, res) {
     }
 });
 
-function printMenu(menu){
-    
+function printMenu(cafe, menu){
+    var str = cafe + ':';
+    for(var key in menu){
+        if(menu[key].length != 0){
+            str = str + '\n' + '\n' + key + '-';
+            for(var s = 0; s < menu[key].length; s++){
+                str = str + '\n' + menu[key][s];
+            }
+        }
+    }
+    return str
 }
 
 
