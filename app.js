@@ -10,6 +10,7 @@ var day = new Date().getDay();
 var hoursURL = "http://caldining.berkeley.edu/locations/semester-hours";
 var jQueryScript = "https://code.jquery.com/jquery-3.1.1.min.js";
 var recognized = ["Foothill", "Cafe 3", "Crossroads", "Clark Kerr", "Golden Bear Cafe", "Qualcomm Cafe", "Brown's Cafe", "Terrace Cafe"];
+var cafeNames = ["gbc", "golden bear cafe", "terrace", "terracecafe", "qualcomm", "qualcommcafe", "browns", "brownscafe"]
 var possibleTexts = ["foothill", "cafe3", "cafethree", "crossroads", "croads", "xroads", "clarkkerr"];
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -33,6 +34,7 @@ app.post('/', function(req, res) {
     var twiml = new twilio.TwimlResponse();
     var text = req.body.Body.toLowerCase();
     text = text.replace(/\s+/g, '');
+    text = text.replace(/[']/g, "");
     if(text.includes("info")){
         text = text.slice(0, -4);
         jsdom.env({
@@ -42,7 +44,7 @@ app.post('/', function(req, res) {
                 var $ = window.$;
                 if(text == "crossroads" || text == "croads" || text == "xroads"){
                     crossroads(twiml, res, $);
-                } else if(text == "brown'scafe" || text == "brownscafe" || text == "browns" || text == "brown's"){
+                } else if(text == "brownscafe" || text == "browns"){
                     browns(twiml, res, $);
                 } else if(text == "terracecafe" || text == "terrace"){
                     terrace(twiml, res, $);
@@ -103,6 +105,9 @@ app.post('/', function(req, res) {
         
             }
         });
+    } else if(cafeNames.indexOf(text) != -1){
+        var help = "Sorry, I don't recognize that command. Make sure to add \"info\" after cafe names since they have no menus."
+        end(twiml, help, res);
     } else if(text == "helpme"){
         var help = "TEXT OPTIONS: " + '\n' + "text \"restaurant_name\" for today's menu" +
                     ';\n' + "text \"restaurant_name info\" for hours and location";
