@@ -81,13 +81,13 @@ app.post('/', function(req, res) {
                 }
                 var str = ""
                 if(text == "crossroads" || text == "croads" || text == "xroads"){
-                    str = "CROSSROADS";
+                    str = "Crossroads";
                 } else if(text == "cafe3" || text == "cafethree"){
-                    str = "CAFE 3";
+                    str = "Cafe 3";
                 } else if(text == "clarkkerr"){
-                    str = "CLARK KERR CAMPUS";
+                    str = "Clark Kerr Campus";
                 } else if(text == "foothill"){
-                    str = "FOOTHILL";
+                    str = "Foothill";
                 }
                 end(twiml, printMenu(str, result[str]), res);
         
