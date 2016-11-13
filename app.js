@@ -16,13 +16,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 
-var result = {
-    "Cafe 3": {"Brunch": [], "Dinner": []}, 
-    "Clark Kerr Campus": {"Breakfast":[], "Lunch":[],"Brunch": [], "Dinner": []}, 
-    "Crossroads": {"Breakfast":[], "Lunch":[], "Brunch": [], "Dinner": []}, 
-    "Foothill": {"Breakfast":[], "Lunch":[],"Brunch": [], "Dinner": []}
-};
-
 
 function removeSpaces(menus){
     for(var i = menus.length - 1; i >= 0; i--){
@@ -67,6 +60,12 @@ app.post('/', function(req, res) {
             }
         });
     } else if(!text.includes("info") && possibleTexts.indexOf(text) != -1){
+        var result = {
+            "Cafe 3": {"Brunch": [], "Dinner": []}, 
+            "Clark Kerr Campus": {"Breakfast":[], "Lunch":[],"Brunch": [], "Dinner": []}, 
+            "Crossroads": {"Breakfast":[], "Lunch":[], "Brunch": [], "Dinner": []}, 
+            "Foothill": {"Breakfast":[], "Lunch":[],"Brunch": [], "Dinner": []}
+        };
         jsdom.env({
             url: "http://caldining.berkeley.edu/menus/all-locations-d1",
             scripts: [jQueryScript],
