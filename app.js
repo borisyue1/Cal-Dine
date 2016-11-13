@@ -61,7 +61,7 @@ app.post('/', function(req, res) {
                 }
             }
         });
-    } else if(!text.includes("info") && possibleTexts.indexOf(text) != -1){
+    } else if(!text.includes("info") && possibleTexts.indexOf(text) != -1){//menu items
         var result = {
             "Cafe 3": {"Brunch": [], "Dinner": []}, 
             "Clark Kerr Campus": {"Breakfast":[], "Lunch":[],"Brunch": [], "Dinner": []}, 
@@ -105,7 +105,7 @@ app.post('/', function(req, res) {
         
             }
         });
-    } else if(cafeNames.indexOf(text) != -1){
+    } else if(cafeNames.indexOf(text) != -1){//if user doesn't put info after cafe
         var help = "Sorry, I don't recognize that command. Make sure to add \"info\" after cafe names since they have no menus."
         end(twiml, help, res);
     } else if(text == "helpme"){
