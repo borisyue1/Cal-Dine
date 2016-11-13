@@ -98,7 +98,7 @@ app.post('/', function(req, res) {
                 } else if(text == "clarkkerr"){
                     str = "Clark Kerr Campus";
                 } else if(text == "foothill"){
-                    str = "Foothill"
+                    str = "Foothill";
                 }
                 end(twiml, printMenu(str, result[str]), res);
         
