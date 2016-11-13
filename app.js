@@ -97,8 +97,8 @@ app.post('/', function(req, res) {
         var help = "Sorry, I don't recognize that command. Make sure to add \"info\" after cafe names since they have no menus."
         end(twiml, help, res);
     } else if(text == "helpme"){
-        var help = "TEXT OPTIONS: " + '\n' + "text \"restaurant_name\" for today's menu" +
-                    ';\n' + "text \"restaurant_name info\" for hours and location";
+        var help = "TEXT OPTIONS: " + '\n' + "text \"restaurant_name\" for today's menu(if available)." +
+                    '\n' + "text \"restaurant_name info\" for hours and location";
         end(twiml, help, res);
     } else {
         var error = "Sorry, I don't recognize that location. Here are the commands I do know(not case-sensitive): "
