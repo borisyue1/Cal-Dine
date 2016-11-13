@@ -105,7 +105,7 @@ app.post('/', function(req, res) {
         recognized.forEach(function(place){
             error = error + "\n" + place;
         });
-        error = error + '\n' + "*TEXT \"HELP ME\" FOR HELP";
+        error = error + '\n' + "*TEXT \"HELPME\" FOR HELP";
         end(twiml, error, res);
     }
 });
