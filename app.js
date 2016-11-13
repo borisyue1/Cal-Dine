@@ -10,8 +10,7 @@ var day = new Date().getDay();
 var hoursURL = "http://caldining.berkeley.edu/locations/semester-hours";
 var jQueryScript = "https://code.jquery.com/jquery-3.1.1.min.js";
 var recognized = ["Foothill", "Cafe 3", "Crossroads", "Clark Kerr", "Golden Bear Cafe", "Qualcomm Cafe", "Brown's Cafe", "Terrace Cafe"];
-var possibleTexts = ["foothill", "cafe3", "cafethree", "crossroads", "croads", "xroads", "clarkkerr",
-                    "gbc", "goldenbearcafe", "qualcommcafe", "brown'scafe", "brownscafe", "terracecafe"];
+var possibleTexts = ["foothill", "cafe3", "cafethree", "crossroads", "croads", "xroads", "clarkkerr"];
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
@@ -107,7 +106,7 @@ app.post('/', function(req, res) {
         });
     } else if(text == "helpme"){
         var help = "TEXT OPTIONS: " + '\n' + "text \"<insert_restaurant_name>\" for today's menu" +
-                    ',\n' + "text \"<insert_restaurant_name> info\" for hours and location";
+                    ';\n' + "text \"<insert_restaurant_name> info\" for hours and location";
         end(twiml, help, res);
     } else {
         var error = "Sorry, I don't recognize that location. Here are the commands I do know(not case-sensitive): "
