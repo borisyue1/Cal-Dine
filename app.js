@@ -3,12 +3,18 @@ var express = require("express"),
     jsdom = require("jsdom"),
     functions = require("./misc/info"),
     indexRoutes = require("./routes/index");
+    // menus = require("./misc/menus");
 
 var app = express();
 var day = new Date().getDay();
 var hoursURL = "http://caldining.berkeley.edu/locations/semester-hours";
 var jQueryScript = "https://code.jquery.com/jquery-3.1.1.min.js";
 var recognized = ["Foothill", "Cafe 3", "Crossroads", "Clark Kerr", "Golden Bear Cafe", "Qualcomm Cafe", "Brown's Cafe", "Terrace Cafe"];
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.set("view engine", "ejs");
+app.use(express.static(__dirname + "/public"));
+
 var result = {
     "Cafe 3": {"Brunch": [], "Dinner": []}, 
     "Clark Kerr Campus": {"Breakfast":[], "Lunch":[],"Brunch": [], "Dinner": []}, 
@@ -16,39 +22,35 @@ var result = {
     "Foothill": {"Breakfast":[], "Lunch":[],"Brunch": [], "Dinner": []}
 };
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.set("view engine", "ejs");
-app.use(express.static(__dirname + "/public"));
+// jsdom.env({
+//     url: "http://caldining.berkeley.edu/menus/all-locations-d1",
+//     scripts: [jQueryScript],
+//     done: function (errors, window) {
+//         var $ = window.$;
+//         var menus = $(".meal_items").text();
+//         menus = menus.split('\n');
+//         removeSpaces(menus);
+//         var place = "";
+//         var time = "";
+//         for(var i = 0; i < menus.length; i++){
+//             var current = menus[i]
+//             if(current in result){
+//                 place = current;
+//             } else if(current in result[place]){
+//                 time = current;
+//             } else if(current != "Brunch" && current.includes("Brunch")){
+//                 place = current.slice(0, -6);
+//                 time = "Brunch";
+//             } else {
+//                 result[place][time].push(current);
+//             }
+//         }        
+//         // console.log(result)
+//         // module.exports = result;
 
+//     }
+// });
 
-jsdom.env({
-            url: "http://caldining.berkeley.edu/menus/all-locations-d1",
-            scripts: [jQueryScript],
-            done: function (errors, window) {
-                var $ = window.$;
-                var menus = $(".meal_items").text();
-                menus = menus.split('\n');
-                removeSpaces(menus);
-                var place = "";
-                var time = "";
-                for(var i = 0; i < menus.length; i++){
-                    var current = menus[i]
-                    if(current in result){
-                        place = current;
-                    } else if(current in result[place]){
-                        time = current;
-                    } else if(current != "Brunch" && current.includes("Brunch")){
-                        place = current.slice(0, -6);
-                        time = "Brunch";
-                    } else {
-                        result[place][time].push(current);
-                    }
-                }
-            }
-        });
-        
-    
-        
 function removeSpaces(menus){
     for(var i = menus.length - 1; i >= 0; i--){
         menus[i] = menus[i].trim();
@@ -201,6 +203,35 @@ app.post('/', function(req, res) {
                 end(twiml, tc, res);
             }
         });
+    } else if(text == "croadsinfo"){
+        jsdom.env({
+            url: "http://caldining.berkeley.edu/menus/all-locations-d1",
+            scripts: [jQueryScript],
+            done: function (errors, window) {
+                var $ = window.$;
+                var menus = $(".meal_items").text();
+                menus = menus.split('\n');
+                removeSpaces(menus);
+                var place = "";
+                var time = "";
+                for(var i = 0; i < menus.length; i++){
+                    var current = menus[i]
+                    if(current in result){
+                        place = current;
+                    } else if(current in result[place]){
+                        time = current;
+                    } else if(current != "Brunch" && current.includes("Brunch")){
+                        place = current.slice(0, -6);
+                        time = "Brunch";
+                    } else {
+                        result[place][time].push(current);
+                    }
+                }   
+                end(twiml, result["Crossroads"], res);
+        
+            }
+        });
+        
     } else {
         var error = "Sorry, I don't recognize that location. Here are the ones I do know: "
         recognized.forEach(function(place){
@@ -209,6 +240,10 @@ app.post('/', function(req, res) {
         end(twiml, error, res);
     }
 });
+
+function printMenu(menu){
+    
+}
 
 
 //end request
