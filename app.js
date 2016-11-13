@@ -10,6 +10,8 @@ var day = new Date().getDay();
 var hoursURL = "http://caldining.berkeley.edu/locations/semester-hours";
 var jQueryScript = "https://code.jquery.com/jquery-3.1.1.min.js";
 var recognized = ["Foothill", "Cafe 3", "Crossroads", "Clark Kerr", "Golden Bear Cafe", "Qualcomm Cafe", "Brown's Cafe", "Terrace Cafe"];
+var possibleTexts = ["foothill", "cafe3", "cafethree", "crossroads", "croads", "xroads", "clarkkerr",
+                    "gbc", "goldenbearcafe", "qualcommcafe", "brown'scafe", "brownscafe", "terracecafe"];
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
@@ -39,143 +41,33 @@ app.post('/', function(req, res) {
     var twiml = new twilio.TwimlResponse();
     var text = req.body.Body.toLowerCase();
     text = text.replace(/\s+/g, '');
-    if (text == "foothill") {
+    if(text.includes("info")){
+        text = text.slice(0, -4);
         jsdom.env({
             url: hoursURL,
             scripts: [jQueryScript],
             done: function (errors, window) {
                 var $ = window.$;
-                var foothill = "Foothill(2700 Hearst Ave)"
-                //adding hours
-                if(day >= 1 && day <= 5){
-                    foothill = functions.foothillWeekday(foothill, $);
-                } else {
-                    foothill = functions.foothillWeekend(foothill, $)
+                if(text == "crossroads" || text == "croads" || text == "xroads"){
+                    crossroads(twiml, res, $);
+                } else if(text == "brown'scafe" || text == "brownscafe"){
+                    browns(twiml, res, $);
+                } else if(text == "terracecafe"){
+                    terrace(twiml, res, $);
+                } else if(text == "qualcommcafe"){
+                    qualcomm(twiml, res, $);
+                } else if(text == "gbc" || text == "goldenbearcafe"){
+                    gbc(twiml, res, $);
+                } else if(text == "clarkkerr"){
+                    ck(twiml, res, $);
+                } else if(text == "cafe3" || text == "cafethree"){
+                    c3(twiml, res, $);
+                } else if(text == "foothill"){
+                    foothill(twiml, res, $);
                 }
-                foothill += "\n" + "Menu: " + "http://caldining.berkeley.edu/menus/foothill";
-                end(twiml, foothill, res);
             }
         });
-    } else if(text == 'cafe3' || text == 'cafethree') {
-        jsdom.env({
-            url: hoursURL,
-            scripts: [jQueryScript],
-            done: function (errors, window) {
-                var $ = window.$;
-                var cafe3 = "Cafe 3(2400 Durant Ave)";
-                if(day >= 1 && day <= 5){
-                    cafe3 = functions.cafeThreeWeekday(cafe3, $);
-                } else {
-                    cafe3 = functions.cafeThreeWeekend(cafe3, $);
-                }
-                cafe3 += "\n" + "Menu: " + "http://caldining.berkeley.edu/menus/cafe3";
-                end(twiml, cafe3, res);
-            }
-        });
-    } else if(text == 'crossroads' || text == 'croads' || text == 'xroads'){
-        jsdom.env({
-            url: hoursURL,
-            scripts: [jQueryScript],
-            done: function (errors, window) {
-                var $ = window.$;
-                var croads = "Crossroads(2415 Bowditch St)";
-                if(day >= 1 && day <= 5){
-                    croads = functions.croadsWeekday(croads, $);
-                } else {
-                    croads = functions.croadsWeekend(croads, $);
-                }
-                if(day >= 0 && day <= 4){
-                    croads += "\n" + "Late night: 10pm - 2am";
-                } else {
-                    croads += "\n" + "Late night: no late night service";
-                }
-                croads += "\n" + "Menu: " + "http://caldining.berkeley.edu/menus/crossroads";
-                end(twiml, croads, res);
-            }
-        });
-    } else if(text == "clarkkerr") {
-        jsdom.env({
-            url: hoursURL,
-            scripts: [jQueryScript],
-            done: function (errors, window) {
-                var $ = window.$;
-                var ck = "Crossroads(2610 Warring St)";
-                if(day >= 1 && day <= 5){
-                    ck = functions.ckWeekday(ck, $);
-                } else {
-                    ck = functions.ckWeekend(ck, $);
-                }
-                ck += "\n" + "Menu: " + "http://caldining.berkeley.edu/menus/clark-kerr-campus";
-                end(twiml, ck, res);
-            }
-        });
-    } else if(text=="gbc" || text == "goldenbearcafe"){
-        jsdom.env({
-            url: hoursURL,
-            scripts: [jQueryScript],
-            done: function (errors, window) {
-                var $ = window.$;
-                var gbc = "Golden Bear Cafe(Upper Sproul Plaza)";
-                if(day >= 1 && day <= 4){
-                    gbc = functions.gbcWeekday(gbc, $);
-                } else if (day == 5) {
-                    gbc = functions.gbcFriday(gbc, $);
-                } else {
-                    gbc = "Closed on weekends";
-                }
-                end(twiml, gbc, res);
-            }
-        });
-    } else if(text=="qualcommcafe"){
-        jsdom.env({
-            url: hoursURL,
-            scripts: [jQueryScript],
-            done: function (errors, window) {
-                var $ = window.$;
-                var qc = "Qualcomm Cafe(Sutardja Dai Hall)";
-                if(day >= 1 && day <= 4){
-                    qc = functions.gbcWeekday(qc, $);
-                } else if (day == 5) {
-                    qc = functions.gbcFriday(qc, $);
-                } else {
-                    qc = "Closed on weekends";
-                }
-                end(twiml, qc, res);
-            }
-        });
-    } else if(text == "brown'scafe" || text == "brownscafe"){
-        jsdom.env({
-            url: hoursURL,
-            scripts: [jQueryScript],
-            done: function (errors, window) {
-                var $ = window.$;
-                var brown = "Brown's Cafe(Genetics & Plant Biology Rooftop)";
-                if(day >= 1 && day <= 4){
-                    brown = functions.brownWeekday(brown, $);
-                } else if (day == 5) {
-                    brown = functions.brownFriday(brown, $);
-                } else {
-                    brown = "Closed on weekends";
-                }
-                end(twiml, brown, res);
-            }
-        });
-    } else if(text == "terracecafe"){
-        jsdom.env({
-            url: hoursURL,
-            scripts: [jQueryScript],
-            done: function (errors, window) {
-                var $ = window.$;
-                var tc = "Brown's Cafe(Genetics & Plant Biology Rooftop)";
-                if(day >= 1 && day <= 5){
-                    tc = functions.tcWeekday(tc, $);
-                } else {
-                    tc = "Closed on weekends";
-                }
-                end(twiml, tc, res);
-            }
-        });
-    } else if(text == "croadsinfo" || text == "crossroadsinfo" || text == "xroadsinfo"){
+    } else if(!text.includes("info") && possibleTexts.indexOf(text) != -1){
         jsdom.env({
             url: "http://caldining.berkeley.edu/menus/all-locations-d1",
             scripts: [jQueryScript],
@@ -198,20 +90,127 @@ app.post('/', function(req, res) {
                     } else {
                         result[place][time].push(current);
                     }
-                }   
-                end(twiml, printMenu("Crossroads", result["Crossroads"]), res);
+                }
+                var str = ""
+                if(text == "crossroads" || text == "croads" || text == "xroads"){
+                    str = "Crossroads";
+                } else if(text == "cafe3" || text == "cafethree"){
+                    str = "Cafe 3";
+                } else if(text == "clarkkerr"){
+                    str = "Clark Kerr Campus";
+                } else if(text == "foothill"){
+                    str = "Foothill"
+                }
+                end(twiml, printMenu(str, result[str]), res);
         
             }
         });
-        
+    } else if(text == "helpme"){
+        var help = "TEXT OPTIONS: " + '\n' + "text \"<insert_restaurant_name>\" for today's menu" +
+                    ',\n' + "text \"<insert_restaurant_name> info\" for hours and location";
+        end(twiml, help, res);
     } else {
-        var error = "Sorry, I don't recognize that location. Here are the commands I do know: "
+        var error = "Sorry, I don't recognize that location. Here are the commands I do know(not case-sensitive): "
         recognized.forEach(function(place){
             error = error + "\n" + place;
         });
+        error = error + '\n' + "*TEXT \"HELP ME\" FOR HELP";
         end(twiml, error, res);
     }
 });
+
+//restaurant responses
+function crossroads(twiml, res, $){
+    var croads = "Crossroads(2415 Bowditch St)";
+    if(day >= 1 && day <= 5){
+        croads = functions.croadsWeekday(croads, $);
+    } else {
+        croads = functions.croadsWeekend(croads, $);
+    }
+    if(day >= 0 && day <= 4){
+        croads += "\n" + "Late night: 10pm - 2am";
+    } else {
+        croads += "\n" + "Late night: no late night service";
+    }
+    end(twiml, croads, res);
+}
+
+function terrace(twiml, res, $){
+    var tc = "Terrace Cafe(Bechtel Building Rooftop)";
+    if(day >= 1 && day <= 5){
+        tc = functions.tcWeekday(tc, $);
+    } else {
+        tc = "Closed on weekends";
+    }
+    end(twiml, tc, res);
+}
+
+function browns(twiml, res, $){
+    var browns = "Brown's Cafe(Genetics & Plant Biology Rooftop)"
+    if(day >= 1 && day <= 4){
+        browns = functions.brownWeekday(browns, $);
+    } else if(day == 5){
+        browns = functions.brownFriday(browns, $);
+    } else {
+        browns = "Closed on weekends";
+    }
+    end(twiml, browns, res);
+}
+
+function qualcomm(twiml, res, $){
+    var qc = "Qualcomm Cafe(Sutardja Dai Hall)";
+    if(day >= 1 && day <= 4){
+        qc = functions.qcWeekday(qc, $);
+    } else if (day == 5) {
+        qc = functions.qcFriday(qc, $);
+    } else {
+        qc = "Closed on weekends";
+    }
+    end(twiml, qc, res);
+}
+
+function gbc(twiml, res, $){
+    var gbc = "Golden Bear Cafe(Upper Sproul Plaza)";
+    if(day >= 1 && day <= 4){
+        gbc = functions.gbcWeekday(gbc, $);
+    } else if (day == 5) {
+        gbc = functions.gbcFriday(gbc, $);
+    } else {
+        gbc = "Closed on weekends";
+    }
+    end(twiml, gbc, res);
+}
+
+function ck(twiml, res, $){
+    var ck = "Clark Kerr(2610 Warring St)";
+    if(day >= 1 && day <= 5){
+        ck = functions.ckWeekday(ck, $);
+    } else {
+        ck = functions.ckWeekend(ck, $);
+    }
+    end(twiml, ck, res);
+}
+
+function c3(twiml, res, $){
+    var cafe3 = "Cafe 3(2400 Durant Ave)";
+    if(day >= 1 && day <= 5){
+        cafe3 = functions.cafeThreeWeekday(cafe3, $);
+    } else {
+        cafe3 = functions.cafeThreeWeekend(cafe3, $);
+    }
+    end(twiml, cafe3, res);
+}
+
+function foothill(twiml, res, $){
+    var foothill = "Foothill(2700 Hearst Ave)"
+    //adding hours
+    if(day >= 1 && day <= 5){
+        foothill = functions.foothillWeekday(foothill, $);
+    } else {
+        foothill = functions.foothillWeekend(foothill, $)
+    }
+    end(twiml, foothill, res);
+}
 
 function printMenu(cafe, menu){
     var str = cafe + ':';
