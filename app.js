@@ -17,18 +17,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 
-
-function removeSpaces(menus){
-    for(var i = menus.length - 1; i >= 0; i--){
-        menus[i] = menus[i].trim();
-        if (menus[i] == '' ||  menus[i] == 'N/A'){
-            var index = menus.indexOf(menus[i]);
-            menus.splice(index, 1);
-        }
-    }
-}
-
-
 app.post('/', function(req, res) {
     var twilio = require('twilio');
     var twiml = new twilio.TwimlResponse();
@@ -213,6 +201,15 @@ function foothill(twiml, res, $){
         foothill = functions.foothillWeekend(foothill, $)
     }
     end(twiml, foothill, res);
+}
+function removeSpaces(menus){
+    for(var i = menus.length - 1; i >= 0; i--){
+        menus[i] = menus[i].trim();
+        if (menus[i] == '' ||  menus[i] == 'N/A'){
+            var index = menus.indexOf(menus[i]);
+            menus.splice(index, 1);
+        }
+    }
 }
 
 function printMenu(cafe, menu){
