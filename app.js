@@ -75,6 +75,9 @@ app.post('/', function(req, res) {
                     } else if(current != "Brunch" && current.includes("Brunch")){
                         place = current.slice(0, -6);
                         time = "Brunch";
+                    } else if(current != "Breakfast" && current.slice(current.length - 9, current.length) == "Breakfast"){
+                        place = current.slice(0, -9);
+                        time = "Breakfast";
                     } else {
                         result[place][time].push(current);
                     }
